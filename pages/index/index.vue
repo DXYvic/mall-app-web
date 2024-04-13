@@ -25,25 +25,6 @@
 				<text class="num">{{swiperLength}}</text>
 			</view>
 		</view>
-		<!-- 头部功能区 -->
-		<view class="cate-section">
-			<view class="cate-item">
-				<image src="/static/temp/c3.png"></image>
-				<text>专题</text>
-			</view>
-			<view class="cate-item">
-				<image src="/static/temp/c5.png"></image>
-				<text>话题</text>
-			</view>
-			<view class="cate-item">
-				<image src="/static/temp/c6.png"></image>
-				<text>优选</text>
-			</view>
-			<view class="cate-item">
-				<image src="/static/temp/c7.png"></image>
-				<text>特惠</text>
-			</view>
-		</view>
 
 		<!-- 品牌制造商直供 -->
 		<view class="f-header m-t" @click="navToRecommendBrandPage()">
@@ -74,7 +55,7 @@
 		<view class="f-header m-t" @click="navToNewProudctListPage()">
 			<image src="/static/icon_new_product.png"></image>
 			<view class="tit-box">
-				<text class="tit">新鲜好物</text>
+				<text class="tit">新品设计</text>
 				<text class="tit2">为你寻觅世间好物</text>
 			</view>
 			<text class="yticon icon-you"></text>
@@ -115,26 +96,9 @@
 			</view>
 		</view>
 
-		<!-- 猜你喜欢-->
-		<view class="f-header m-t">
-			<image src="/static/icon_recommend_product.png"></image>
-			<view class="tit-box">
-				<text class="tit">猜你喜欢</text>
-				<text class="tit2">你喜欢的都在这里了</text>
-			</view>
-			<text class="yticon icon-you" v-show="false"></text>
-		</view>
+		
 
-		<view class="guess-section">
-			<view v-for="(item, index) in recommendProductList" :key="index" class="guess-item" @click="navToDetailPage(item)">
-				<view class="image-wrapper">
-					<image :src="item.pic" mode="aspectFill"></image>
-				</view>
-				<text class="title clamp">{{item.name}}</text>
-				<text class="title2 clamp">{{item.subTitle}}</text>
-				<text class="price">￥{{item.price}}</text>
-			</view>
-		</view>
+
 		<uni-load-more :status="loadingType"></uni-load-more>
 	</view>
 </template>
