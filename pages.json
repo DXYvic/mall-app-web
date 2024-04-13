@@ -5,7 +5,7 @@
 			"path": "pages/index/index",
 			"style": {
 				// #ifdef MP 
-				"navigationBarTitleText": "Mall商城",
+				"navigationBarTitleText": "家居定制商城",
 				//"navigationStyle": "custom",
 				// #endif 
 				"enablePullDownRefresh": true,
