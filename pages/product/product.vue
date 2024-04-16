@@ -77,7 +77,7 @@
 			</view>
 		</view>
 
-		<!-- 评价 -->
+<!-- 		评价
 		<view class="eva-section">
 			<view class="e-header">
 				<text class="tit">评价</text>
@@ -96,7 +96,7 @@
 					</view>
 				</view>
 			</view>
-		</view>
+		</view> -->
 
 		<!-- 品牌信息 -->
 		<view class="brand-info">
