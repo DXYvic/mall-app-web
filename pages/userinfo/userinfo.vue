@@ -5,7 +5,7 @@
 			<text class="bg-upload-btn yticon icon-paizhao">{{userInfo.status==1?'启用中':'未启用'}}</text>
 			<view class="portrait-box">
 				<image class="portrait" :src="userInfo.icon || '/static/missing-face.png'"></image>
-				<text class="pt-upload-btn yticon icon-paizhao">更新头像</text>
+				<text class="pt-upload-btn yticon icon-paizhao" @click="changeicon">更新头像</text>
 			</view>
 		</view>
 
@@ -14,45 +14,41 @@
 
 
 
-				<view class="uni-form-item uni-column">
+				<view class="uni-form-item" style="margin: 15px;">
 					<view class="title">用户名</view>
 					<input class="uni-input" name="input" :placeholder="userInfo.username" />
 					
 				</view>
-				<view class="uni-form-item uni-column">
+				<view class="uni-form-item" style="margin: 15px;">
 					<view class="title">昵称</view>
 					<input class="uni-input" name="input" :placeholder="userInfo.nickname" />
 				</view>
-				<view class="uni-form-item uni-column">
-					<view class="title">性别</view>
-					<radio-group name="radio" v-model="userInfo.gender">
-						<label>
-							<radio :value="1"  /><text>男</text>
-						</label>
-						<label>
-							<radio :value="2"  /><text>女</text>
-						</label>
-						<label>
-							<radio :value="0"  /><text>未知</text>
-						</label>
-					</radio-group>
+				<view class="uni-form-item" style="margin: 15px;">
+					    <radio-group v-model="gender">
+							<view class="title">性别</view>
+					      <label class="radio-label" v-for="(item, index) in genderOptions" :key="index">
+					        <radio :value="item.value">{{ item.label }}</radio>
+					      </label>
+					    </radio-group>
 				</view>
-				<view class="uni-form-item uni-column">
+				<view class="uni-form-item" style="margin: 15px;">
 					<view class="title">手机号</view>
 					<input class="uni-input" name="input" :placeholder="userInfo.phone" />
 				</view>
-				<view class="uni-form-item uni-column">
+				<view class="uni-form-item" style="margin: 15px;">
 					<view class="title">地址</view>
 					<input class="uni-input" name="input" :placeholder="userInfo.city" />
 				</view>
-				<view class="uni-form-item uni-column">
-					<view class="title">密码</view>
-					<input class="uni-input" name="input" :placeholder="userInfo.nickname" />
+				<view class="uni-form-item" style="margin: 15px;">
+					<view class="title">修改密码</view>
+					<input class="uni-input" type="password" name="password" placeholder="输入新密码"/>
 				</view>
 
-				<view class="uni-btn-v">
-					<button form-type="submit">提交</button>
-					<button type="default" form-type="reset">重置</button>
+				<view class="btn-member">
+					<button type="primary"  form-type="submit">提交</button><br>
+					
+					<button type="primary" plain="true" form-type="reset">重置</button><br>
+					
 				</view>
 			</form>
 		</view>
@@ -69,7 +65,12 @@ import {
 	export default {
 		data() {
 			return {
-
+				      gender: '0', // 假设用户性别为男
+				      genderOptions: [
+				        { label: '男', value: '1' },
+				        { label: '女', value: '2' },
+						{ label: '未知', value:'0'}
+				      ]
 			};
 		},
 		computed: {
@@ -157,7 +158,13 @@ import {
 		.bg-upload-btn {
 			right: 20upx;
 			bottom: 16upx;
+		}	
+		.uni-form-item{
+			margin-bottom: 15px;
 		}
-		
+
+		.btn-member{
+			
+		}
 	}
 </style>
