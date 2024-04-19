@@ -17,3 +17,17 @@ export function memberInfo() {
 		url: '/sso/info'
 	})
 }
+// export function fetchMemberDetail(id) {
+// 	return request({
+// 		method: 'GET',
+// 		url: `/sso/${id}`
+// 	})
+// }
+
+export function updateMember(data) {
+	return request({
+		method: 'POST',
+		url: `/sso/update/${data.id}`,
+		data:data
+	})
+}

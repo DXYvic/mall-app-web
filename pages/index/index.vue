@@ -12,7 +12,7 @@
 			<!-- 标题栏和状态栏占位符 -->
 			<view class="titleNview-placing"></view>
 			<!-- 背景色区域 -->
-			<view class="titleNview-background" :style="{backgroundColor:titleNViewBackground}"></view>
+			<!-- <view class="titleNview-background" :style="{backgroundColor:titleNViewBackground}"></view> -->
 			<swiper class="carousel" circular @change="swiperChange">
 				<swiper-item v-for="(item, index) in advertiseList" :key="index" class="carousel-item" @click="navToAdvertisePage(item)">
 					<image :src="item.pic" />
