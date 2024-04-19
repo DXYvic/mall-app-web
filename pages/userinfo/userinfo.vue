@@ -1,94 +1,150 @@
 <template>
-	<view>
+	<view class="content">
 		<view class="user-section">
 			<image class="bg" src="/static/user-bg.jpg"></image>
-			<text class="bg-upload-btn yticon icon-paizhao">{{userInfo.status==1?'启用中':'未启用'}}</text>
+			<text class="bg-upload-btn yticon icon-paizhao">{{userInfo.status==1?'已启用':'未启用'}}</text>
 			<view class="portrait-box">
 				<image class="portrait" :src="userInfo.icon || '/static/missing-face.png'"></image>
-				<text class="pt-upload-btn yticon icon-paizhao" @click="changeicon">更新头像</text>
+				<text class="pt-upload-btn yticon icon-paizhao">更换头像</text>
 			</view>
 		</view>
-
-		<view>
-			<form @submit="formSubmit" @reset="formReset">
-
-
-
-				<view class="uni-form-item" style="margin: 15px;">
-					<view class="title">用户名</view>
-					<input class="uni-input" name="input" :placeholder="userInfo.username" />
-					
-				</view>
-				<view class="uni-form-item" style="margin: 15px;">
-					<view class="title">昵称</view>
-					<input class="uni-input" name="input" :placeholder="userInfo.nickname" />
-				</view>
-				<view class="uni-form-item" style="margin: 15px;">
-					    <radio-group v-model="gender">
-							<view class="title">性别</view>
-					      <label class="radio-label" v-for="(item, index) in genderOptions" :key="index">
-					        <radio :value="item.value">{{ item.label }}</radio>
-					      </label>
-					    </radio-group>
-				</view>
-				<view class="uni-form-item" style="margin: 15px;">
-					<view class="title">手机号</view>
-					<input class="uni-input" name="input" :placeholder="userInfo.phone" />
-				</view>
-				<view class="uni-form-item" style="margin: 15px;">
-					<view class="title">地址</view>
-					<input class="uni-input" name="input" :placeholder="userInfo.city" />
-				</view>
-				<view class="uni-form-item" style="margin: 15px;">
-					<view class="title">修改密码</view>
-					<input class="uni-input" type="password" name="password" placeholder="输入新密码"/>
-				</view>
-
-				<view class="btn-member">
-					<button type="primary"  form-type="submit">提交</button><br>
-					
-					<button type="primary" plain="true" form-type="reset">重置</button><br>
-					
-				</view>
-			</form>
+		<view class="row b-b">
+			<text class="tit">账号：</text>
+			<input class="input" type="text" v-model="userInfo.username" placeholder="账号"
+				placeholder-class="placeholder" />
 		</view>
-
+		<view class="row b-b">
+			<text class="tit">昵称：</text>
+			<input class="input" type="text" v-model="userInfo.nickname" placeholder="昵称"
+				placeholder-class="placeholder" />
+		</view>
+		<view class="row b-b">
+			<text class="tit">性别</text>
+			<!-- <switch :checked="userInfo.gender==1" color="#fa436a" @change="switchChange" /> -->
+			<radio-group name="radio" v-model="userInfo.gender">
+			  <label>
+			    <radio value="1" :checked="userInfo.gender==1" @click="handleGenderChange(1)" /><text>男</text>
+			  </label>
+			  <label>
+			    <radio value="2" :checked="userInfo.gender==2" @click="handleGenderChange(2)" /><text>女</text>
+			  </label>
+			  <label>
+			    <radio value="0" :checked="userInfo.gender==0" @click="handleGenderChange(0)" /><text>未知</text>
+			  </label>
+			</radio-group>
+		</view>
+		<view class="row b-b">
+			<text class="tit">手机号码：</text>
+			<input class="input" type="number" v-model="userInfo.phone" placeholder="手机号码"
+				placeholder-class="placeholder" />
+		</view>
+		<!-- 		<view class="row b-b">
+			<text class="tit">所在区域</text>
+			<text @click="chooseLocation" class="input">
+				{{addressData.province}} {{addressData.city}} {{addressData.region}}
+			</text>
+			<text class="yticon icon-shouhuodizhi" @click="chooseLocation"></text>
+		</view> -->
+		<view class="row b-b">
+			<text class="tit">密码</text>
+			<input class="input" type="password" v-model="userInfo.password" placeholder="所在区域"
+				placeholder-class="placeholder" />
+		</view>
+		<view class="row b-b">
+			<text class="tit">详细地址：</text>
+			<input class="input" type="text" v-model="userInfo.city" placeholder="详细地址"
+				placeholder-class="placeholder" />
+		</view>
+			<!-- {{userInfo.gender}} -->
+		<!-- <view class="row default-row">
+			
+		</view> -->
+		<button class="add-btn" @click="confirm">提交</button>
 	</view>
 </template>
 
 <script>
-	import { userInfo } from 'os';
-import {
+	import {
 		mapState,
 		mapMutations
 	} from 'vuex';
+	import {
+		addAddress,
+		updateAddress,
+		fetchAddressDetail
+	} from '@/api/address.js';
+	import {
+		memberInfo,
+		updateMember
+	} from '@/api/member.js';
+	import {
+		userInfo
+	} from 'os';
 	export default {
 		data() {
 			return {
-				      gender: '0', // 假设用户性别为男
-				      genderOptions: [
-				        { label: '男', value: '1' },
-				        { label: '女', value: '2' },
-						{ label: '未知', value:'0'}
-				      ]
-			};
+				memberData: {
+					id: '',
+					username: '',
+					nickname: '',
+					phone: '',
+					status: '',
+					icon: '',
+					gender: '',
+					city: '',
+				}
+			}
 		},
 		computed: {
 			...mapState(['userInfo']),
 		},
-		methods: {
-			formSubmit: function(e) {
-				console.log('form发生了submit事件，携带数据为：' + JSON.stringify(e.detail.value))
-				var formdata = e.detail.value
-				uni.showModal({
-					content: '表单数据内容：' + JSON.stringify(formdata),
-					showCancel: false
+		onLoad(option) {
+			let title = '个人资料';
+			if (option.type === 'edit') {
+				title = '编辑个人资料'
+				memberInfo().then(response => {
+					this.memberData = response.data;
 				});
+			}
+			this.manageType = option.type;
+			uni.setNavigationBarTitle({
+				title
+			})
+		},
+		methods: {
+			//动态更改性别
+			 handleGenderChange(value) {
+			    this.userInfo.gender = value;
+			  },
+			//提交
+			confirm() {
+				this.memberData.id = this.userInfo.id;
+				this.memberData.username = this.userInfo.username;
+				this.memberData.nickname = this.userInfo.nickname;
+				this.memberData.password=this.userInfo.password;
+				this.memberData.phone = this.userInfo.phone;
+				this.memberData.icon = this.userInfo.icon;
+				this.memberData.gender = this.userInfo.gender;
+				this.memberData.city = this.userInfo.city;
+				let data = this.memberData;
+				if (!data.username) {
+					this.$api.msg('请填写收货人姓名');
+					return;
+				}
+
+				updateMember(this.memberData).then(response => {
+					this.$message({
+					                message: '修改成功！',
+					                type: 'success'
+					              });
+					//this.$api.prePage()获取上一页实例，可直接调用上页所有数据和方法，在App.vue定义
+					setTimeout(() => {
+						uni.navigateBack()
+					}, 800)
+				});
+
+
 			},
-			formReset: function(e) {
-				console.log('清空数据')
-			},
-			
 		}
 	}
 </script>
@@ -96,6 +152,60 @@ import {
 <style lang="scss">
 	page {
 		background: $page-color-base;
+		padding-top: 16upx;
+	}
+
+	.row {
+		display: flex;
+		align-items: center;
+		position: relative;
+		padding: 0 30upx;
+		height: 110upx;
+		background: #fff;
+
+		.tit {
+			flex-shrink: 0;
+			width: 150upx;
+			font-size: 30upx;
+			color: $font-color-dark;
+		}
+
+		.input {
+			flex: 1;
+			font-size: 30upx;
+			color: $font-color-dark;
+		}
+
+		.icon-shouhuodizhi {
+			font-size: 36upx;
+			color: $font-color-light;
+		}
+	}
+
+	.default-row {
+		margin-top: 16upx;
+
+		.tit {
+			flex: 1;
+		}
+
+		switch {
+			transform: translateX(16upx) scale(.9);
+		}
+	}
+
+	.add-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 690upx;
+		height: 80upx;
+		margin: 60upx auto;
+		font-size: $font-lg;
+		color: #fff;
+		background-color: $base-color;
+		border-radius: 10upx;
+		box-shadow: 1px 2px 5px rgba(219, 63, 96, 0.4);
 	}
 
 	.user-section {
@@ -131,7 +241,6 @@ import {
 			height: 100%;
 			border-radius: 50%;
 		}
-		
 
 		.yticon {
 			position: absolute;
@@ -145,26 +254,14 @@ import {
 		}
 
 		.pt-upload-btn {
-			font-size: 12px;
-			right: 17px;
-			// text-align: center;
+			font-size: 10px;
+			right: 22px;
 			bottom: 10upx;
-		}
-
-		.uni-form-item .title {
-			padding: 20rpx 0;
 		}
 
 		.bg-upload-btn {
 			right: 20upx;
 			bottom: 16upx;
-		}	
-		.uni-form-item{
-			margin-bottom: 15px;
-		}
-
-		.btn-member{
-			
 		}
 	}
 </style>
