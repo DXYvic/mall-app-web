@@ -1,11 +1,17 @@
 <template>
+
 	<view class="content">
 		<view class="user-section">
 			<image class="bg" src="/static/user-bg.jpg"></image>
 			<text class="bg-upload-btn yticon icon-paizhao">{{userInfo.status==1?'已启用':'未启用'}}</text>
 			<view class="portrait-box">
+				
+				
+				
 				<image class="portrait" :src="userInfo.icon || '/static/missing-face.png'"></image>
 				<text class="pt-upload-btn yticon icon-paizhao">更换头像</text>
+				
+				
 			</view>
 		</view>
 		<view class="row b-b">
@@ -22,15 +28,15 @@
 			<text class="tit">性别</text>
 			<!-- <switch :checked="userInfo.gender==1" color="#fa436a" @change="switchChange" /> -->
 			<radio-group name="radio" v-model="userInfo.gender">
-			  <label>
-			    <radio value="1" :checked="userInfo.gender==1" @click="handleGenderChange(1)" /><text>男</text>
-			  </label>
-			  <label>
-			    <radio value="2" :checked="userInfo.gender==2" @click="handleGenderChange(2)" /><text>女</text>
-			  </label>
-			  <label>
-			    <radio value="0" :checked="userInfo.gender==0" @click="handleGenderChange(0)" /><text>未知</text>
-			  </label>
+				<label>
+					<radio :checked="userInfo.gender==1" @click="handleGenderChange(1)" /><text>男</text>
+				</label>
+				<label>
+					<radio :checked="userInfo.gender==2" @click="handleGenderChange(2)" /><text>女</text>
+				</label>
+				<label>
+					<radio :checked="userInfo.gender==0" @click="handleGenderChange(0)" /><text>未知</text>
+				</label>
 			</radio-group>
 		</view>
 		<view class="row b-b">
@@ -55,15 +61,24 @@
 			<input class="input" type="text" v-model="userInfo.city" placeholder="详细地址"
 				placeholder-class="placeholder" />
 		</view>
-			<!-- {{userInfo.gender}} -->
+		<!-- {{userInfo.gender}} -->
 		<!-- <view class="row default-row">
 			
 		</view> -->
-		<button class="add-btn" @click="confirm">提交</button>
+		<button class="add-btn" style="background: #1fd8b3;" @click="confirm">提交</button>
+		<button class="add-btn">取消</button>
+		<br>
 	</view>
 </template>
 
 <script>
+	import {
+		chooseImage,
+		uploadFiles,
+		uploadImage,
+		delImage,
+		previewImage
+	} from '@/components/upload-images';
 	import {
 		mapState,
 		mapMutations
@@ -81,6 +96,15 @@
 		userInfo
 	} from 'os';
 	export default {
+		components:{
+			chooseImage,
+			uploadFiles,
+			uploadImage,
+			delImage,
+			previewImage
+		},
+		
+		
 		data() {
 			return {
 				memberData: {
@@ -113,15 +137,16 @@
 		},
 		methods: {
 			//动态更改性别
-			 handleGenderChange(value) {
-			    this.userInfo.gender = value;
-			  },
+			handleGenderChange(value) {
+				this.userInfo.gender = value;
+			},
+
 			//提交
 			confirm() {
 				this.memberData.id = this.userInfo.id;
 				this.memberData.username = this.userInfo.username;
 				this.memberData.nickname = this.userInfo.nickname;
-				this.memberData.password=this.userInfo.password;
+				this.memberData.password = this.userInfo.password;
 				this.memberData.phone = this.userInfo.phone;
 				this.memberData.icon = this.userInfo.icon;
 				this.memberData.gender = this.userInfo.gender;
@@ -134,9 +159,9 @@
 
 				updateMember(this.memberData).then(response => {
 					this.$message({
-					                message: '修改成功！',
-					                type: 'success'
-					              });
+						message: '修改成功！',
+						type: 'success'
+					});
 					//this.$api.prePage()获取上一页实例，可直接调用上页所有数据和方法，在App.vue定义
 					setTimeout(() => {
 						uni.navigateBack()
