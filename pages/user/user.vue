@@ -3,7 +3,7 @@
 		
 		<view class="user-section">
 			<image class="bg" src="/static/user-bg.jpg"></image>
-			<view class="user-info-box">
+			<view class="user-info-box" @click="navTo('/pages/userinfo/userinfo')">
 				<view class="portrait-box">
 					<image class="portrait" :src="userInfo.icon || '/static/missing-face.png'"></image>
 				</view>
