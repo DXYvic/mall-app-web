@@ -7,7 +7,7 @@
 		<view class="wrapper">
 			<view class="left-top-sign">LOGIN</view>
 			<view class="welcome">
-				欢迎回来！
+				<!-- 欢迎 ！！！ -->
 			</view>
 			<view class="input-content">
 				<view class="input-item">
@@ -21,7 +21,7 @@
 				</view>
 			</view>
 			<button class="confirm-btn" @click="toLogin" :disabled="logining">登录</button>
-			<button class="confirm-btn2" @click="toRegist" >获取体验账号</button>
+			<button class="confirm-btn2" @click="toRegist" >注册</button>
 			<view class="forget-section" @click="toRegist">
 				忘记密码?
 			</view>
@@ -116,7 +116,7 @@
 
 	.left-top-sign {
 		font-size: 120upx;
-		color: $page-color-base;
+		color: #597375;
 		position: relative;
 		left: -16upx;
 	}

@@ -5,29 +5,86 @@
 		<view class="right-top-sign"></view>
 		<!-- 设置白色背景防止软键盘把下部绝对定位元素顶上来盖住输入框等 -->
 		<view class="wrapper">
-			<view class="empty">
-				<image src="/static/qrcode_for_macrozheng_258.jpg" mode="aspectFit"></image>
-				<view class="empty-tips">
-					扫描上方二维码<view class="navigator">关注公众号</view>，
+			<view class="left-top-sign">REGIST</view>
+			<view class="welcome">
+				<!-- 欢迎 ！！！ -->
+			</view>
+			<view class="input-content">
+				<view class="input-item">
+					<text class="tit">用户名</text>
+					<input type="text" v-model="username" placeholder="请输入用户名" maxlength="11"/>
 				</view>
-				<view class="empty-tips">
-					回复<view class="navigator">会员</view>获取体验账号。
+				<view class="input-item">
+					<text class="tit">电话号码</text>
+					<input type="text" v-model="telephone" placeholder="请输入电话号码" length="11"/>
+				</view>
+				<view class="input-item">
+					<text class="tit">密码</text>
+					<input type="text" v-model="password" placeholder="8-18位不含特殊字符的数字、字母组合" placeholder-class="input-empty" maxlength="20"
+					 password />
 				</view>
 			</view>
+			<!-- <button class="confirm-btn" @click="toLogin" :disabled="logining">登录</button> -->
+			<button class="confirm-btn2" @click="toRegist" >注册</button>
+			
 		</view>
 	</view>
 </template>
 
 <script>
+import { memberRegist } from '../../api/member';
 	export default {
 		data() {
-			return {}
+			return {
+				username:'',
+				password:'',
+				telephone:'',
+			}
 		},
 		onLoad() {
 		},
 		methods: {
 			navBack() {
 				uni.navigateBack();
+			},
+			
+			async toRegist() {
+				if (!this.username || !this.password || !this.telephone) {
+				        uni.showToast({
+				            title: '请完善信息',
+				            icon: 'none'
+				        });
+				        return; // 数据不完整，不执行后续逻辑
+				    }
+
+				uni.showModal({
+					title:'提示',
+					content:'成为分销商需要200元代理费，是否支付？',
+					confirmText:'支付',
+					cancelText:'取消',
+					success: (res)=> {
+							if (res.confirm) {
+								memberRegist({
+									username: this.username,
+									password: this.password,
+									telephone:this.telephone
+								}).then(response => {
+									uni.showToast({
+									    title: '注册成功',
+									    icon: 'none'
+									});
+								}).catch(() => {
+									this.logining = false;
+								});
+								
+								
+							} else if (res.cancel) {
+								console.log("cancel")
+								
+							}
+						}
+				})
+				
 			},
 		},
 
@@ -39,36 +96,6 @@
 		background: #fff;
 	}
 	
-	.empty {
-		position: fixed;
-		left: 0;
-		top: 0;
-		width: 100%;
-		height: 100vh;
-		padding-bottom: 100upx;
-		display: flex;
-		justify-content: center;
-		flex-direction: column;
-		align-items: center;
-		background: #fff;
-	
-		image {
-			width: 420upx;
-			height: 420upx;
-			margin-bottom: 30upx;
-		}
-		.empty-tips {
-			display: flex;
-			font-size: $font-sm+16upx;
-			color: $font-color-disabled;
-		
-			.navigator {
-				color: $uni-color-primary;
-				margin-left: 0upx;
-			}
-		}
-	}
-
 	.container {
 		padding-top: 115px;
 		position: relative;
@@ -77,14 +104,14 @@
 		overflow: hidden;
 		background: #fff;
 	}
-
+	
 	.wrapper {
 		position: relative;
 		z-index: 90;
 		background: #fff;
 		padding-bottom: 40upx;
 	}
-
+	
 	.back-btn {
 		position: absolute;
 		left: 40upx;
@@ -94,20 +121,20 @@
 		font-size: 40upx;
 		color: $font-color-dark;
 	}
-
+	
 	.left-top-sign {
 		font-size: 120upx;
-		color: $page-color-base;
+		color:#597375;
 		position: relative;
 		left: -16upx;
 	}
-
+	
 	.right-top-sign {
 		position: absolute;
 		top: 80upx;
 		right: -30upx;
 		z-index: 95;
-
+	
 		&:before,
 		&:after {
 			display: block;
@@ -116,12 +143,12 @@
 			height: 80upx;
 			background: #b4f3e2;
 		}
-
+	
 		&:before {
 			transform: rotate(50deg);
 			border-radius: 0 50px 0 0;
 		}
-
+	
 		&:after {
 			position: absolute;
 			right: -198upx;
@@ -131,7 +158,7 @@
 			/* background: pink; */
 		}
 	}
-
+	
 	.left-bottom-sign {
 		position: absolute;
 		left: -270upx;
@@ -139,5 +166,100 @@
 		border: 100upx solid #d0d1fd;
 		border-radius: 50%;
 		padding: 180upx;
+	}
+	
+	.welcome {
+		position: relative;
+		left: 50upx;
+		top: -90upx;
+		font-size: 46upx;
+		color: #555;
+		text-shadow: 1px 0px 1px rgba(0, 0, 0, .3);
+	}
+	
+	.input-content {
+		padding: 0 60upx;
+	}
+	
+	.input-item {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: center;
+		padding: 0 30upx;
+		background: $page-color-light;
+		height: 120upx;
+		border-radius: 4px;
+		margin-bottom: 50upx;
+	
+		&:last-child {
+			margin-bottom: 0;
+		}
+	
+		.tit {
+			height: 50upx;
+			line-height: 56upx;
+			font-size: $font-sm+2upx;
+			color: $font-color-base;
+		}
+	
+		input {
+			height: 60upx;
+			font-size: $font-base + 2upx;
+			color: $font-color-dark;
+			width: 100%;
+		}
+	}
+	
+	.confirm-btn {
+		width: 630upx;
+		height: 76upx;
+		line-height: 76upx;
+		border-radius: 50px;
+		margin-top: 70upx;
+		background: $uni-color-primary;
+		color: #fff;
+		font-size: $font-lg;
+	
+		&:after {
+			border-radius: 100px;
+		}
+	}
+	
+	.confirm-btn2 {
+		width: 630upx;
+		height: 76upx;
+		line-height: 76upx;
+		border-radius: 50px;
+		margin-top: 40upx;
+		background: $uni-color-primary;
+		color: #fff;
+		font-size: $font-lg;
+	
+		&:after {
+			border-radius: 100px;
+		}
+	}
+	
+	.forget-section {
+		font-size: $font-sm+2upx;
+		color: $font-color-spec;
+		text-align: center;
+		margin-top: 40upx;
+	}
+	
+	.register-section {
+		position: absolute;
+		left: 0;
+		bottom: 50upx;
+		width: 100%;
+		font-size: $font-sm+2upx;
+		color: $font-color-base;
+		text-align: center;
+	
+		text {
+			color: $font-color-spec;
+			margin-left: 10upx;
+		}
 	}
 </style>

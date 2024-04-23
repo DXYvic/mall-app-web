@@ -70,7 +70,7 @@
 				<text class="cell-tit clamp">运费</text>
 				<text class="cell-tip">￥{{calcAmount.freightAmount}}</text>
 			</view>
-			<view class="yt-list-cell b-b">
+			<!-- <view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">活动优惠</text>
 				<text class="cell-tip red">-￥{{calcAmount.promotionAmount}}</text>
 			</view>
@@ -78,9 +78,9 @@
 				<text class="cell-tit clamp">优惠券</text>
 				<text class="cell-tip red" v-if="currCoupon!=null">-￥{{currCoupon.amount}}</text>
 				<text class="cell-tip red" v-else>-￥0</text>
-			</view>
+			</view> -->
 			<view class="yt-list-cell b-b">
-				<text class="cell-tit clamp">积分抵扣</text>
+				<text class="cell-tit clamp">可返积分</text>
 				<text class="cell-tip red">-￥{{calcIntegrationAmount(useIntegration)}}</text>
 			</view>
 			<view class="yt-list-cell desc-cell">

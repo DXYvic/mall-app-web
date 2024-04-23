@@ -59,7 +59,7 @@
 			
 		</view> -->
 		<button class="add-btn" style="background: #33acd8;" @click="confirm">提交</button>
-		<button class="add-btn">取消</button>
+		<button class="add-btn" @click='navBack'>取消</button>
 		<br>
 	</view>
 </template>
@@ -124,7 +124,9 @@
 			handleGenderChange(value) {
 				this.userInfo.gender = value;
 			},
-
+			navBack() {
+							uni.navigateBack();
+						},
 			//提交
 			confirm() {
 				this.memberData.id = this.userInfo.id;

@@ -10,6 +10,16 @@ export function memberLogin(data) {
 		data: data
 	})
 }
+export function memberRegist(params) {
+	return request({
+		method: 'POST',
+		url: '/sso/register',
+		header: {
+			'content-type': 'application/x-www-form-urlencoded;charset=utf-8'
+		},
+		params:params
+	})
+}
 
 export function memberInfo() {
 	return request({

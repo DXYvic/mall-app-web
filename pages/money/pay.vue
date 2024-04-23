@@ -2,11 +2,11 @@
 	<view class="app">
 		<view class="price-box">
 			<text>支付金额</text>
-			<text class="price">{{orderInfo.payAmount}}</text>
+			<text class="price">{{orderInfo.payAmount|| '200'}}</text>
 		</view>
 
 		<view class="pay-type-list">
-			<view class="type-item b-b" @click="changePayType(1)">
+			<!-- <view class="type-item b-b" @click="changePayType(1)">
 				<text class="icon yticon icon-alipay"></text>
 				<view class="con">
 					<text class="tit">支付宝支付</text>
@@ -17,7 +17,8 @@
 					</radio>
 				</label>
 			</view>
-			<view class="type-item b-b" @click="changePayType(2)">
+			 -->
+			 <view class="type-item b-b" @click="changePayType(2)">
 				<text class="icon yticon icon-weixinzhifu"></text>
 				<view class="con">
 					<text class="tit">微信支付</text>
@@ -43,7 +44,7 @@
 		data() {
 			return {
 				orderId: null,
-				payType: 1,
+				payType: 2,
 				orderInfo: {}
 			};
 		},
@@ -51,7 +52,7 @@
 			this.orderId = options.orderId;
 			fetchOrderDetail(this.orderId).then(response => {
 				this.orderInfo = response.data;
-			});
+			});	
 		},
 		methods: {
 			//选择支付方式

@@ -13,15 +13,15 @@
 			</view>
 			<view class="vip-card-box">
 				<image class="card-bg" src="/static/vip-card-bg.png" mode=""></image>
-				<view class="b-btn">
+				<!-- <view class="b-btn">
 					立即开通
-				</view>
+				</view> -->
 				<view class="tit">
-					<text class="yticon icon-iLinkapp-"></text>
-					黄金会员
+					<text class="yticon icon-iLinkapp-">{{userInfo.username?'代理分销商':'点击头像登录'}}</text>
+				<!-- <text class="e-b">黄金及以上会员可享有会员价优惠商品。</text> -->
+					
 				</view>
-				<text class="e-m">mall移动端商城</text>
-				<text class="e-b">黄金及以上会员可享有会员价优惠商品。</text>
+				
 			</view>
 		</view>
 		
@@ -277,6 +277,8 @@
 			z-index: 1;
 		}
 		.tit{
+			position: absolute;
+			left: 20upx;
 			font-size: $font-base+2upx;
 			color: #f7d680;
 			margin-bottom: 28upx;
