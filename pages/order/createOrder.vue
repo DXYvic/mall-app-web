@@ -27,8 +27,10 @@
 				<image :src="item.productPic"></image>
 				<view class="right">
 					<text class="title clamp">{{item.productName}}</text>
-					<text class="spec">{{item.productAttr | formatProductAttr}}</text>
-					<text class="promotion clamp">{{item.promotionMessage}}</text>
+					<text class="spec">{{item.productAttr | formatProductAttr}}</text><br>
+					<text class="spec" style="color:darkorange">定制信息：</text><br>
+					<text class="made">{{item.productMade}}</text>
+					<!-- <text class="promotion clamp">{{item.promotionMessage}}</text> -->
 					<view class="price-box">
 						<text class="price">￥{{item.price}}</text>
 						<text class="number">x {{item.quantity}}</text>
@@ -38,7 +40,7 @@
 		</view>
 
 		<!-- 优惠明细 -->
-		<view class="yt-list">
+		<!-- <view class="yt-list">
 			<view class="yt-list-cell b-b" @click="toggleMask('show')">
 				<view class="cell-icon">
 					券
@@ -57,7 +59,7 @@
 				<input class="integration" type="number" v-model="useIntegration" placeholder="使用积分数量" placeholder-class="placeholder"
 				 @input="handleIntegrationInput" />
 			</view>
-		</view>
+		</view> -->
 		<!-- 金额明细 -->
 		<view class="yt-list">
 			<view class="yt-list-cell b-b">
@@ -197,6 +199,7 @@
 						this.couponList.push(item.coupon);
 					}
 					this.calcAmount = response.data.calcAmount;
+					this.productMade=response.data.productMade;
 					this.integrationConsumeSetting = response.data.integrationConsumeSetting;
 					this.memberIntegration = response.data.memberIntegration;
 				});
@@ -414,6 +417,13 @@
 				font-size: 26upx;
 				color: $font-color-light;
 			}
+			.made {
+				font-size: 26upx;
+				// color: $font-color-light;
+				color:#315162;
+				background-color: #e5f6ff;
+			}
+			
 
 			.promotion {
 				font-size: 24upx;

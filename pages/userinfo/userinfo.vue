@@ -5,13 +5,8 @@
 			<image class="bg" src="/static/user-bg.jpg"></image>
 			<text class="bg-upload-btn yticon icon-paizhao">{{userInfo.status==1?'已启用':'未启用'}}</text>
 			<view class="portrait-box">
-				
-				
-				
 				<image class="portrait" :src="userInfo.icon || '/static/missing-face.png'"></image>
-				<text class="pt-upload-btn yticon icon-paizhao">更换头像</text>
-				
-				
+				<text class="pt-upload-btn yticon icon-paizhao" >更换头像</text>
 			</view>
 		</view>
 		<view class="row b-b">
@@ -34,9 +29,7 @@
 				<label>
 					<radio :checked="userInfo.gender==2" @click="handleGenderChange(2)" /><text>女</text>
 				</label>
-				<label>
-					<radio :checked="userInfo.gender==0" @click="handleGenderChange(0)" /><text>未知</text>
-				</label>
+
 			</radio-group>
 		</view>
 		<view class="row b-b">
@@ -53,7 +46,7 @@
 		</view> -->
 		<view class="row b-b">
 			<text class="tit">密码</text>
-			<input class="input" type="password" v-model="userInfo.password" placeholder="所在区域"
+			<input class="input" type="password" v-model="userInfo.password" placeholder="请输入密码"
 				placeholder-class="placeholder" />
 		</view>
 		<view class="row b-b">
@@ -65,7 +58,7 @@
 		<!-- <view class="row default-row">
 			
 		</view> -->
-		<button class="add-btn" style="background: #1fd8b3;" @click="confirm">提交</button>
+		<button class="add-btn" style="background: #33acd8;" @click="confirm">提交</button>
 		<button class="add-btn">取消</button>
 		<br>
 	</view>
@@ -96,15 +89,6 @@
 		userInfo
 	} from 'os';
 	export default {
-		components:{
-			chooseImage,
-			uploadFiles,
-			uploadImage,
-			delImage,
-			previewImage
-		},
-		
-		
 		data() {
 			return {
 				memberData: {
@@ -156,13 +140,12 @@
 					this.$api.msg('请填写收货人姓名');
 					return;
 				}
-
 				updateMember(this.memberData).then(response => {
-					this.$message({
-						message: '修改成功！',
-						type: 'success'
-					});
-					//this.$api.prePage()获取上一页实例，可直接调用上页所有数据和方法，在App.vue定义
+					uni.showToast({
+					        title: '修改成功！',
+					        icon: 'success'
+					    });
+					// this.$api.prePage()//获取上一页实例，可直接调用上页所有数据和方法，在App.vue定义
 					setTimeout(() => {
 						uni.navigateBack()
 					}, 800)

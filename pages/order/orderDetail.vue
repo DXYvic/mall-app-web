@@ -31,7 +31,7 @@
 				<view class="right">
 					<text class="title clamp">{{item.productName}}</text>
 					<text class="spec">{{item.productAttr | formatProductAttr}}</text>
-					<text class="promotion clamp">{{item.promotionName}}</text>
+					<text class="promotion clamp">{{item.productMade}}</text>
 					<view class="price-box">
 						<text class="price">￥{{item.productPrice}}</text>
 						<text class="number">x {{item.productQuantity}}</text>

@@ -28,12 +28,12 @@
 
 		<!--  分享 -->
 		<view class="share-section" @click="share">
-			<view class="share-icon">
+			<!-- <view class="share-icon">
 				<text class="yticon icon-xingxing"></text>
 				返
-			</view>
-			<text class="tit">该商品分享可领49减10红包</text>
-			<text class="yticon icon-bangzhu1"></text>
+			</view> -->
+			<text class="tit"></text>
+			<!-- <text class="yticon icon-bangzhu1"></text> -->
 			<view class="share-btn">
 				立即分享
 				<text class="yticon icon-you"></text>
@@ -58,15 +58,19 @@
 				</view>
 				<text class="yticon icon-you"></text>
 			</view>
-			<view class="c-row b-b" @click="toggleCoupon('show')">
+			<!-- <view class="c-row b-b" @click="toggleCoupon('show')">
 				<text class="tit">优惠券</text>
 				<text class="con t-r red">领取优惠券</text>
 				<text class="yticon icon-you"></text>
-			</view>
+			</view> -->
 			<view class="c-row b-b">
-				<text class="tit">促销活动</text>
+				<text class="tit">私人定制</text>
 				<view class="con-list">
-					<text v-for="item in promotionTipList" :key="item">{{item}}</text>
+					<!-- <text v-for="item in promotionTipList" :key="item">{{item}}</text> -->
+					<!-- <input class="input" type="text" v-model="product.made" placeholder="请输入定制信息"
+						placeholder-class="placeholder" /> -->
+					<textarea auto-height type="text" v-model="product.made" placeholder="请输入定制信息"
+						placeholder-class="placeholder" />
 				</view>
 			</view>
 			<view class="c-row b-b">
@@ -76,27 +80,6 @@
 				</view>
 			</view>
 		</view>
-
-<!-- 		评价
-		<view class="eva-section">
-			<view class="e-header">
-				<text class="tit">评价</text>
-				<text>(86)</text>
-				<text class="tip">好评率 100%</text>
-				<text class="yticon icon-you"></text>
-			</view>
-			<view class="eva-box">
-				<image class="portrait" src="http://img3.imgtn.bdimg.com/it/u=1150341365,1327279810&fm=26&gp=0.jpg" mode="aspectFill"></image>
-				<view class="right">
-					<text class="name">Leo yo</text>
-					<text class="con">商品收到了，79元两件，质量不错，试了一下有点瘦，但是加个外罩很漂亮，我很喜欢</text>
-					<view class="bot">
-						<text class="attr">购买类型：XL 红色</text>
-						<text class="time">2019-04-01 19:21</text>
-					</view>
-				</view>
-			</view>
-		</view> -->
 
 		<!-- 品牌信息 -->
 		<view class="brand-info">
@@ -189,9 +172,9 @@
 			</view>
 		</view>
 		<!-- 优惠券面板 -->
-		<view class="mask" :class="couponState===0 ? 'none' : couponState===1 ? 'show' : ''" @click="toggleCoupon">
+		<!-- <view class="mask" :class="couponState===0 ? 'none' : couponState===1 ? 'show' : ''" @click="toggleCoupon">
 			<view class="mask-content" @click.stop.prevent="stopPrevent">
-				<!-- 优惠券页面，仿mt -->
+				 优惠券页面，仿mt 
 				<view class="coupon-item" v-for="(item,index) in couponList" :key="index" @click="addCoupon(item)">
 					<view class="con">
 						<view class="left">
@@ -209,7 +192,7 @@
 					<text class="tips">{{item.useType | formatCouponUseType}}</text>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		<!-- 分享 -->
 		<share ref="share" :contentHeight="580" :shareList="shareList"></share>
 	</view>
@@ -294,7 +277,8 @@
 				attrList: [],
 				promotionTipList: [],
 				couponState: 0,
-				couponList: []
+				couponList: [],
+
 			};
 		},
 		async onLoad(options) {
@@ -654,7 +638,8 @@
 					productSkuId: productSkuStock.id,
 					productSn: this.product.productSn,
 					productSubTitle: this.product.subTitle,
-					quantity: 1
+					productMade: this.product.made,
+					quantity: 1,
 				};
 				addCartItem(cartItem).then(response => {
 					uni.showToast({
