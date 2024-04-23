@@ -569,6 +569,7 @@
 					imgs[i].style.width = '100%';
 					imgs[i].style.height = 'auto';
 					imgs[i].style.display = 'block';
+					imgs[i].style.marginBottom='5px';
 				}
 				this.desc = tempNode.innerHTML;
 			},
