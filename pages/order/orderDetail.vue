@@ -50,16 +50,16 @@
 				<text class="cell-tit clamp">运费</text>
 				<text class="cell-tip">￥{{order.freightAmount}}</text>
 			</view>
-			<view class="yt-list-cell b-b">
+			<!-- <view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">活动优惠</text>
 				<text class="cell-tip red">-￥{{order.promotionAmount}}</text>
 			</view>
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">优惠券</text>
 				<text class="cell-tip red">-￥{{order.couponAmount}}</text>
-			</view>
+			</view> -->
 			<view class="yt-list-cell b-b">
-				<text class="cell-tit clamp">积分抵扣</text>
+				<text class="cell-tit clamp">返还积分</text>
 				<text class="cell-tip red">-￥{{order.integrationAmount}}</text>
 			</view>
 			<view class="yt-list-cell desc-cell">

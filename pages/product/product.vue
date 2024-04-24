@@ -276,8 +276,8 @@
 				skuStockList: [],
 				attrList: [],
 				promotionTipList: [],
-				couponState: 0,
-				couponList: [],
+				// couponState: 0,
+				// couponList: [],
 
 			};
 		},
@@ -297,16 +297,16 @@
 				let date = new Date(time);
 				return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
 			},
-			formatCouponUseType(useType) {
-				if (useType == 0) {
-					return "全场通用";
-				} else if (useType == 1) {
-					return "指定分类商品可用";
-				} else if (useType == 2) {
-					return "指定商品可用";
-				}
-				return null;
-			},
+			// formatCouponUseType(useType) {
+			// 	if (useType == 0) {
+			// 		return "全场通用";
+			// 	} else if (useType == 1) {
+			// 		return "指定分类商品可用";
+			// 	} else if (useType == 2) {
+			// 		return "指定商品可用";
+			// 	}
+			// 	return null;
+			// },
 		},
 		methods: {
 			async loadData(id) {
@@ -347,24 +347,24 @@
 				}
 			},
 			//优惠券弹窗开关
-			toggleCoupon(type) {
-				fetchProductCouponList(this.product.id).then(response => {
-					this.couponList = response.data;
-					if(this.couponList==null||this.couponList.length==0){
-						uni.showToast({
-							title:"暂无可领优惠券",
-							icon:"none"
-						})
-						return;
-					}
-					let timer = type === 'show' ? 10 : 300;
-					let state = type === 'show' ? 1 : 0;
-					this.couponState = 2;
-					setTimeout(() => {
-						this.couponState = state;
-					}, timer)
-				});
-			},
+			// toggleCoupon(type) {
+			// 	fetchProductCouponList(this.product.id).then(response => {
+			// 		this.couponList = response.data;
+			// 		if(this.couponList==null||this.couponList.length==0){
+			// 			uni.showToast({
+			// 				title:"暂无可领优惠券",
+			// 				icon:"none"
+			// 			})
+			// 			return;
+			// 		}
+			// 		let timer = type === 'show' ? 10 : 300;
+			// 		let state = type === 'show' ? 1 : 0;
+			// 		this.couponState = 2;
+			// 		setTimeout(() => {
+			// 			this.couponState = state;
+			// 		}, timer)
+			// 	});
+			// },
 			//选择规格
 			selectSpec(index, pid) {
 				let list = this.specChildList;
@@ -391,15 +391,15 @@
 
 			},
 			//领取优惠券
-			addCoupon(coupon) {
-				this.toggleCoupon();
-				addMemberCoupon(coupon.id).then(response => {
-					uni.showToast({
-						title: '领取优惠券成功！',
-						duration: 2000
-					});
-				});
-			},
+			// addCoupon(coupon) {
+			// 	this.toggleCoupon();
+			// 	addMemberCoupon(coupon.id).then(response => {
+			// 		uni.showToast({
+			// 			title: '领取优惠券成功！',
+			// 			duration: 2000
+			// 		});
+			// 	});
+			// },
 			//分享
 			share() {
 				this.$refs.share.toggleMask();

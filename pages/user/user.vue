@@ -42,13 +42,13 @@
 					<text class="num">{{userInfo.integration || '暂无'}}</text>
 					<text>积分</text>
 				</view>
-				<view class="tj-item">
+				<!-- <view class="tj-item">
 					<text class="num">{{userInfo.growth || '暂无'}}</text>
 					<text>成长值</text>
-				</view>
+				</view> -->
 				<view class="tj-item" @click="navTo('/pages/coupon/couponList')">
-					<text class="num">{{couponCount || '暂无'}}</text>
-					<text>优惠券</text>
+					<text class="num"> 积分兑换</text>
+					<text>1积分=1块钱</text>
 				</view>
 			</view>
 			<!-- 订单 -->
@@ -86,9 +86,9 @@
 </template>  
 <script>  
 	import listCell from '@/components/mix-list-cell';
-	import {
-		fetchMemberCouponList
-	} from '@/api/coupon.js';
+	// import {
+	// 	fetchMemberCouponList
+	// } from '@/api/coupon.js';
     import {  
         mapState 
     } from 'vuex';  
@@ -108,15 +108,15 @@
 		onLoad(){
 		},
 		onShow(){
-			if(this.hasLogin){
-				fetchMemberCouponList(0).then(response=>{
-					if(response.data!=null&&response.data.length>0){
-						this.couponCount = response.data.length;
-					}
-				});
-			}else{
-				this.couponCount=null;
-			}
+			// if(this.hasLogin){
+			// 	fetchMemberCouponList(0).then(response=>{
+			// 		if(response.data!=null&&response.data.length>0){
+			// 			this.couponCount = response.data.length;
+			// 		}
+			// 	});
+			// }else{
+			// 	this.couponCount=null;
+			// }
 		},
 		// #ifndef MP
 		onNavigationBarButtonTap(e) {

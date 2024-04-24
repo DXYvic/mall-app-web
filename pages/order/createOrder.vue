@@ -100,9 +100,9 @@
 		</view>
 
 		<!-- 优惠券面板 -->
-		<view class="mask" :class="maskState===0 ? 'none' : maskState===1 ? 'show' : ''" @click="toggleMask">
+		<!-- <view class="mask" :class="maskState===0 ? 'none' : maskState===1 ? 'show' : ''" @click="toggleMask">
 			<view class="mask-content" @click.stop.prevent="stopPrevent">
-				<!-- 优惠券页面，仿mt -->
+				<!-- 优惠券页面，仿mt 
 				<view class="coupon-item" v-for="(item,index) in couponList" :key="index" @click="selectCoupon(item)">
 					<view class="con">
 						<view class="left">
@@ -120,7 +120,7 @@
 					<text class="tips">{{item.useType | formatCouponUseType}}</text>
 				</view>
 			</view>
-		</view>
+		</view -->
 
 	</view>
 </template>
@@ -139,12 +139,12 @@
 				maskState: 0, //优惠券面板显示状态
 				desc: '', //备注
 				payType: 1, //1微信 2支付宝
-				couponList: [],
+				// couponList: [],
 				memberReceiveAddressList: [],
 				currentAddress: {},
 				cartPromotionItemList: [],
 				calcAmount: {},
-				currCoupon: null,
+				// currCoupon: null,
 				useIntegration: 0,
 				integrationConsumeSetting: {},
 				memberIntegration: 0,
@@ -194,10 +194,10 @@
 					this.memberReceiveAddressList = response.data.memberReceiveAddressList;
 					this.currentAddress = this.getDefaultAddress();
 					this.cartPromotionItemList = response.data.cartPromotionItemList;
-					this.couponList = [];
-					for (let item of response.data.couponHistoryDetailList) {
-						this.couponList.push(item.coupon);
-					}
+					// this.couponList = [];
+					// for (let item of response.data.couponHistoryDetailList) {
+					// 	this.couponList.push(item.coupon);
+					// }
 					this.calcAmount = response.data.calcAmount;
 					this.productMade=response.data.productMade;
 					this.integrationConsumeSetting = response.data.integrationConsumeSetting;
@@ -227,9 +227,9 @@
 					memberReceiveAddressId:this.currentAddress.id,
 					useIntegration:this.useIntegration
 				}
-				if(this.currCoupon!=null){
-					orderParam.couponId = this.currCoupon.id;
-				}
+				// if(this.currCoupon!=null){
+				// 	orderParam.couponId = this.currCoupon.id;
+				// }
 				generateOrder(orderParam).then(response => {
 					let orderId = response.data.order.id;
 					uni.showModal({
@@ -265,17 +265,17 @@
 				}
 				return {};
 			},
-			selectCoupon(coupon) {
-				this.currCoupon = coupon;
-				this.calcPayAmount();
-				this.toggleMask();
-			},
+			// selectCoupon(coupon) {
+			// 	this.currCoupon = coupon;
+			// 	this.calcPayAmount();
+			// 	this.toggleMask();
+			// },
 			//计算支付金额
 			calcPayAmount() {
 				this.calcAmount.payAmount = this.calcAmount.totalAmount - this.calcAmount.promotionAmount - this.calcAmount.freightAmount;
-				if (this.currCoupon != null) {
-					this.calcAmount.payAmount = this.calcAmount.payAmount - this.currCoupon.amount;
-				}
+				// if (this.currCoupon != null) {
+				// 	this.calcAmount.payAmount = this.calcAmount.payAmount - this.currCoupon.amount;
+				// }
 				if (this.useIntegration != 0) {
 					this.calcAmount.payAmount = this.calcAmount.payAmount - this.calcIntegrationAmount();
 				}
