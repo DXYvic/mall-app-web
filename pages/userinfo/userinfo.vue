@@ -6,7 +6,9 @@
 			<text class="bg-upload-btn yticon icon-paizhao">{{userInfo.status==1?'已启用':'未启用'}}</text>
 			<view class="portrait-box">
 				<image class="portrait" :src="userInfo.icon || '/static/missing-face.png'"></image>
-				<text class="pt-upload-btn yticon icon-paizhao" >更换头像</text>
+				<text class="pt-upload-btn yticon icon-paizhao">更换头像</text>
+				<uni-file-picker limit="1" :del-icon="false" disable-preview :imageStyles="imageStyles"
+					file-mediatype="image" @select="upload">选择</uni-file-picker>
 			</view>
 		</view>
 		<view class="row b-b">
@@ -125,8 +127,28 @@
 				this.userInfo.gender = value;
 			},
 			navBack() {
-							uni.navigateBack();
-						},
+				uni.navigateBack();
+			},
+
+			/* 头像上传 */
+			upload(e) {
+				console.log(e)
+				uni.uploadFile({
+					url: 'http://localhost:8887/uploadAvatar',
+					filePath: e.tempFilePaths[0],
+					name: 'file',
+					formData: {
+						sid: this.student.sid
+					},
+					header: {
+						'content-type': 'multipart/form-data' // 使用multipart/form-data格式
+					},
+					success: (res) => {
+						console.log(res)
+					}
+				})
+			},
+
 			//提交
 			confirm() {
 				this.memberData.id = this.userInfo.id;
@@ -144,9 +166,9 @@
 				}
 				updateMember(this.memberData).then(response => {
 					uni.showToast({
-					        title: '修改成功！',
-					        icon: 'success'
-					    });
+						title: '修改成功！',
+						icon: 'success'
+					});
 					// this.$api.prePage()//获取上一页实例，可直接调用上页所有数据和方法，在App.vue定义
 					setTimeout(() => {
 						uni.navigateBack()
