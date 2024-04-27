@@ -1,10 +1,11 @@
 import request from '@/utils/requestUtil'
 
-export function addCartItem(data) {
+export function addCartItem(data,params) {
 	return request({
 		method: 'POST',
 		url: '/cart/add',
-		data: data
+		data: data,
+		params:params
 	})
 }
 

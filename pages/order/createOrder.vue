@@ -39,27 +39,6 @@
 			</view>
 		</view>
 
-		<!-- 优惠明细 -->
-		<!-- <view class="yt-list">
-			<view class="yt-list-cell b-b" @click="toggleMask('show')">
-				<view class="cell-icon">
-					券
-				</view>
-				<text class="cell-tit clamp">优惠券</text>
-				<text class="cell-tip active">
-					选择优惠券
-				</text>
-				<text class="cell-more wanjia wanjia-gengduo-d"></text>
-			</view>
-			<view class="yt-list-cell b-b">
-				<view class="cell-icon hb">
-					积
-				</view>
-				<text class="cell-tit clamp">积分抵扣</text>
-				<input class="integration" type="number" v-model="useIntegration" placeholder="使用积分数量" placeholder-class="placeholder"
-				 @input="handleIntegrationInput" />
-			</view>
-		</view> -->
 		<!-- 金额明细 -->
 		<view class="yt-list">
 			<view class="yt-list-cell b-b">
@@ -70,15 +49,6 @@
 				<text class="cell-tit clamp">运费</text>
 				<text class="cell-tip">￥{{calcAmount.freightAmount}}</text>
 			</view>
-			<!-- <view class="yt-list-cell b-b">
-				<text class="cell-tit clamp">活动优惠</text>
-				<text class="cell-tip red">-￥{{calcAmount.promotionAmount}}</text>
-			</view>
-			<view class="yt-list-cell b-b">
-				<text class="cell-tit clamp">优惠券</text>
-				<text class="cell-tip red" v-if="currCoupon!=null">-￥{{currCoupon.amount}}</text>
-				<text class="cell-tip red" v-else>-￥0</text>
-			</view> -->
 			<view class="yt-list-cell b-b">
 				<text class="cell-tit clamp">可返积分</text>
 				<text class="cell-tip red">-￥{{calcIntegrationAmount(useIntegration)}}</text>
@@ -98,30 +68,6 @@
 			</view>
 			<text class="submit" @click="submit">提交订单</text>
 		</view>
-
-		<!-- 优惠券面板 -->
-		<!-- <view class="mask" :class="maskState===0 ? 'none' : maskState===1 ? 'show' : ''" @click="toggleMask">
-			<view class="mask-content" @click.stop.prevent="stopPrevent">
-				<!-- 优惠券页面，仿mt 
-				<view class="coupon-item" v-for="(item,index) in couponList" :key="index" @click="selectCoupon(item)">
-					<view class="con">
-						<view class="left">
-							<text class="title">{{item.name}}</text>
-							<text class="time">有效期至{{item.endTime | formatDateTime}}</text>
-						</view>
-						<view class="right">
-							<text class="price">{{item.amount}}</text>
-							<text>满{{item.minPoint}}可用</text>
-						</view>
-
-						<view class="circle l"></view>
-						<view class="circle r"></view>
-					</view>
-					<text class="tips">{{item.useType | formatCouponUseType}}</text>
-				</view>
-			</view>
-		</view -->
-
 	</view>
 </template>
 
@@ -265,11 +211,7 @@
 				}
 				return {};
 			},
-			// selectCoupon(coupon) {
-			// 	this.currCoupon = coupon;
-			// 	this.calcPayAmount();
-			// 	this.toggleMask();
-			// },
+			
 			//计算支付金额
 			calcPayAmount() {
 				this.calcAmount.payAmount = this.calcAmount.totalAmount - this.calcAmount.promotionAmount - this.calcAmount.freightAmount;

@@ -9,7 +9,6 @@
 				</swiper-item>
 			</swiper>
 		</view>
-
 		<view class="introduce-section">
 			<text class="title">{{product.name}}</text><br>
 			<text class="title2">{{product.subTitle}}</text>
@@ -65,12 +64,12 @@
 			</view> -->
 			<view class="c-row b-b">
 				<text class="tit">私人定制</text>
-				<view class="con-list">
+				<view class="con-list" style="padding-left: 30upx;">
 					<!-- <text v-for="item in promotionTipList" :key="item">{{item}}</text> -->
 					<!-- <input class="input" type="text" v-model="product.made" placeholder="请输入定制信息"
 						placeholder-class="placeholder" /> -->
-					<textarea auto-height type="text" v-model="product.made" placeholder="请输入定制信息"
-						placeholder-class="placeholder" />
+					<textarea auto-height type="text" style="color: orange;" v-model="product.made"
+						placeholder="请输入定制信息" placeholder-class="placeholder" />
 				</view>
 			</view>
 			<view class="c-row b-b">
@@ -147,8 +146,9 @@
 				<view v-for="(item,index) in specList" :key="index" class="attr-list">
 					<text>{{item.name}}</text>
 					<view class="item-list">
-						<text v-for="(childItem, childIndex) in specChildList" v-if="childItem.pid === item.id" :key="childIndex" class="tit"
-						 :class="{selected: childItem.selected}" @click="selectSpec(childIndex, childItem.pid)">
+						<text v-for="(childItem, childIndex) in specChildList" v-if="childItem.pid === item.id"
+							:key="childIndex" class="tit" :class="{selected: childItem.selected}"
+							@click="selectSpec(childIndex, childItem.pid)">
 							{{childItem.name}}
 						</text>
 					</view>
@@ -171,28 +171,7 @@
 				</view>
 			</view>
 		</view>
-		<!-- 优惠券面板 -->
-		<!-- <view class="mask" :class="couponState===0 ? 'none' : couponState===1 ? 'show' : ''" @click="toggleCoupon">
-			<view class="mask-content" @click.stop.prevent="stopPrevent">
-				 优惠券页面，仿mt 
-				<view class="coupon-item" v-for="(item,index) in couponList" :key="index" @click="addCoupon(item)">
-					<view class="con">
-						<view class="left">
-							<text class="title">{{item.name}}</text>
-							<text class="time">有效期至{{item.endTime | formatDateTime}}</text>
-						</view>
-						<view class="right">
-							<text class="price">{{item.amount}}</text>
-							<text>满{{item.minPoint}}可用</text>
-						</view>
 
-						<view class="circle l"></view>
-						<view class="circle r"></view>
-					</view>
-					<text class="tips">{{item.useType | formatCouponUseType}}</text>
-				</view>
-			</view>
-		</view> -->
 		<!-- 分享 -->
 		<share ref="share" :contentHeight="580" :shareList="shareList"></share>
 	</view>
@@ -204,8 +183,15 @@
 		fetchProductDetail
 	} from '@/api/product.js';
 	import {
+		fetchAddressList,
+		fetchAddressDetail
+	} from '@/api/address.js';
+	import {
 		addCartItem
 	} from '@/api/cart.js';
+	import {
+		generateOrderByPayment
+	} from '@/api/order.js';
 	import {
 		fetchProductCouponList,
 		addMemberCoupon
@@ -276,9 +262,18 @@
 				skuStockList: [],
 				attrList: [],
 				promotionTipList: [],
+				currentAddress: {},
+				memberReceiveAddressList: [],
+				cartItem: {},
 				// couponState: 0,
 				// couponList: [],
-
+				orderByPayParam: {
+					payType: 0,
+					memberReceiveAddressId: '',
+					giftPoint: '',
+					
+				},
+				cartItem: {}
 			};
 		},
 		async onLoad(options) {
@@ -297,16 +292,6 @@
 				let date = new Date(time);
 				return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
 			},
-			// formatCouponUseType(useType) {
-			// 	if (useType == 0) {
-			// 		return "全场通用";
-			// 	} else if (useType == 1) {
-			// 		return "指定分类商品可用";
-			// 	} else if (useType == 2) {
-			// 		return "指定商品可用";
-			// 	}
-			// 	return null;
-			// },
 		},
 		methods: {
 			async loadData(id) {
@@ -323,6 +308,11 @@
 					this.handleReadHistory();
 					this.initProductCollection();
 				});
+				fetchAddressList().then(response => {
+					this.memberReceiveAddressList = response.data;
+					this.currentAddress = this.getDefaultAddress();
+					// console.log('这个是调试信息'+this.currentAddress);
+				})
 			},
 			//规格弹窗开关
 			toggleSpec() {
@@ -346,25 +336,6 @@
 					this.attrClass = 'show';
 				}
 			},
-			//优惠券弹窗开关
-			// toggleCoupon(type) {
-			// 	fetchProductCouponList(this.product.id).then(response => {
-			// 		this.couponList = response.data;
-			// 		if(this.couponList==null||this.couponList.length==0){
-			// 			uni.showToast({
-			// 				title:"暂无可领优惠券",
-			// 				icon:"none"
-			// 			})
-			// 			return;
-			// 		}
-			// 		let timer = type === 'show' ? 10 : 300;
-			// 		let state = type === 'show' ? 1 : 0;
-			// 		this.couponState = 2;
-			// 		setTimeout(() => {
-			// 			this.couponState = state;
-			// 		}, timer)
-			// 	});
-			// },
 			//选择规格
 			selectSpec(index, pid) {
 				let list = this.specChildList;
@@ -390,16 +361,18 @@
 				this.changeSpecInfo();
 
 			},
-			//领取优惠券
-			// addCoupon(coupon) {
-			// 	this.toggleCoupon();
-			// 	addMemberCoupon(coupon.id).then(response => {
-			// 		uni.showToast({
-			// 			title: '领取优惠券成功！',
-			// 			duration: 2000
-			// 		});
-			// 	});
-			// },
+			//获取默认收货地址
+			getDefaultAddress() {
+				for (let item of this.memberReceiveAddressList) {
+					if (item.defaultStatus == 1) {
+						return item;
+					}
+				}
+				if (this.memberReceiveAddressList != null && this.memberReceiveAddressList.length > 0) {
+					return this.memberReceiveAddressList[0];
+				}
+				return {};
+			},
 			//分享
 			share() {
 				this.$refs.share.toggleMask();
@@ -438,11 +411,91 @@
 					});
 				}
 			},
-			buy() {
-				uni.showToast({
-					title: "暂时只支持从购物车下单！",
-					icon: 'none'
+			buyto() {
+				let orderParam = {
+					payType: 0,
+					couponId: null,
+					cartIds: this.cartIds,
+					memberReceiveAddressId: this.currentAddress.id,
+					useIntegration: this.useIntegration
+				}
+				generateOrder(orderParam).then(response => {
+					let orderId = response.data.order.id;
+					uni.showModal({
+						title: '提示',
+						content: '订单创建成功，是否要立即支付？',
+						confirmText: '去支付',
+						cancelText: '取消',
+						success: function(res) {
+							if (res.confirm) {
+								uni.redirectTo({
+									url: `/pages/money/pay?orderId=${orderId}`
+								})
+							} else if (res.cancel) {
+								console.log("cancel")
+								uni.redirectTo({
+									url: '/pages/order/order?state=0'
+								})
+							}
+						}
+					});
 				});
+			},
+
+			buy() {
+				if (!this.checkForLogin()) {
+					return;
+				}
+				let productSkuStock = this.getSkuStock();
+				this.cartItem = {
+					price: 30,
+					productAttr: productSkuStock.spData,
+					productBrand: this.product.brandName,
+					productCategoryId: this.product.productCategoryId,
+					productId: this.product.id,
+					productName: this.product.name,
+					productPic: this.product.pic,
+					productSkuCode: productSkuStock.skuCode,
+					productSkuId: productSkuStock.id,
+					productSn: this.product.productSn,
+					productSubTitle: this.product.subTitle,
+					productMade: this.product.made,
+					quantity: 1,
+				};
+				this.orderByPayParam.payType = 0;
+				this.orderByPayParam.memberReceiveAddressId = this.currentAddress.id;
+				this.orderByPayParam.giftPoint = this.product.giftPoint;
+				console.log('这个是调试信息' + this.product.giftPoint);
+				generateOrderByPayment(this.cartItem,this.orderByPayParam).then(response => {
+					// uni.navigateTo({
+					// 	url: `/pages/order/order?state=0`
+					// })
+					let orderId = response.data.order.id;
+					uni.showModal({
+							title: '提示',
+							content: '订单创建成功，是否要立即支付？',
+							confirmText:'去支付',
+							cancelText:'取消',
+							success: function(res) {
+								if (res.confirm) {
+									uni.redirectTo({
+										url: `/pages/money/pay?orderId=${orderId}`
+									})
+								} else if (res.cancel) {
+									console.log("cancel")
+									uni.redirectTo({
+										url: '/pages/order/order?state=0'
+									})
+								}
+							}
+						});
+					
+				});
+
+				// uni.showToast({
+				// 	title: "暂时只支持从购物车下单！",
+				// 	icon: 'none'
+				// });
 			},
 			stopPrevent() {},
 			//设置头图信息
@@ -569,7 +622,7 @@
 					imgs[i].style.width = '100%';
 					imgs[i].style.height = 'auto';
 					imgs[i].style.display = 'block';
-					imgs[i].style.marginBottom='5px';
+					imgs[i].style.marginBottom = '5px';
 				}
 				this.desc = tempNode.innerHTML;
 			},
@@ -683,7 +736,7 @@
 				}
 			},
 			//跳转到品牌详情页
-			navToBrandDetail(){
+			navToBrandDetail() {
 				let id = this.brand.id;
 				uni.navigateTo({
 					url: `/pages/brand/brandDetail?id=${id}`
@@ -1455,14 +1508,14 @@
 			font-size: $font-base + 2upx;
 			color: $font-color-dark;
 			position: relative;
-		
+
 			text {
 				padding: 0 20upx;
 				background: #fff;
 				position: relative;
 				z-index: 1;
 			}
-		
+
 			&:after {
 				position: absolute;
 				left: 50%;

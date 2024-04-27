@@ -8,6 +8,14 @@ export function generateConfirmOrder(data) {
 	})
 }
 
+export function generateOrderByPayment(data,params) {
+	return request({	
+		method: 'POST',
+		url: '/order/generateOrderByPayment',
+		data:data,
+		params:params
+	})
+}
 export function generateOrder(data) {
 	return request({
 		method: 'POST',
